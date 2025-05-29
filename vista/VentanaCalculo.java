@@ -34,7 +34,6 @@ public class VentanaCalculo extends JDialog implements ActionListener {
 
         lblTitulo = new JLabel("Cálculo de IMC");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(new Color(0, 102, 204));
 
         lblPersona = new JLabel("Persona:");
         cmbPersonas = new JComboBox<>();
@@ -47,18 +46,15 @@ public class VentanaCalculo extends JDialog implements ActionListener {
         txtTalla = new JTextField(10);
 
         btnCalcular = new JButton("Calcular IMC");
-        btnCalcular.setBackground(new Color(0, 102, 204));
-        btnCalcular.setForeground(Color.WHITE);
+        btnCalcular.setForeground(Color.BLACK);
         btnCalcular.setFont(new Font("Arial", Font.BOLD, 12));
 
         btnActualizar = new JButton("↻");
-        btnActualizar.setBackground(new Color(102, 153, 255));
-        btnActualizar.setForeground(Color.WHITE);
+        btnActualizar.setForeground(Color.BLACK);
         btnActualizar.setToolTipText("Actualizar lista");
 
         btnCerrar = new JButton("Cerrar");
-        btnCerrar.setBackground(new Color(204, 0, 0));
-        btnCerrar.setForeground(Color.WHITE);
+        btnCerrar.setForeground(Color.BLACK);
 
         areaResultado = new JTextArea(8, 30);
         areaResultado.setEditable(false);
@@ -114,8 +110,8 @@ public class VentanaCalculo extends JDialog implements ActionListener {
         btnCalcular.addActionListener(this);
         btnCerrar.addActionListener(this);
         btnActualizar.addActionListener(this);
-        txtPeso.addActionListener(this);  // Enter va a talla
-        txtTalla.addActionListener(this); // Enter calcula
+        txtPeso.addActionListener(this);
+        txtTalla.addActionListener(this);
     }
 
     private void cargarPersonas() {
@@ -123,10 +119,10 @@ public class VentanaCalculo extends JDialog implements ActionListener {
         cmbPersonas.addItem("-- Seleccione una persona --");
 
         if (miCoordinador != null) {
-            List<PersonaDTO> personas = miCoordinador.obtenerTodasLasPersonas();
+            List<PersonaDTO> personas = miCoordinador.consultarTodasLasPersonas();
             if (personas != null) {
                 for (PersonaDTO persona : personas) {
-                    cmbPersonas.addItem(persona.getNombre());
+                    cmbPersonas.addItem(persona.getDocumento());
                 }
             }
 
@@ -143,7 +139,7 @@ public class VentanaCalculo extends JDialog implements ActionListener {
         if (e.getSource() == btnCalcular || e.getSource() == txtTalla) {
             procesarCalculo();
         } else if (e.getSource() == txtPeso) {
-            txtTalla.requestFocus(); // Pasar al siguiente campo
+            txtTalla.requestFocus();
         } else if (e.getSource() == btnCerrar) {
             dispose();
         } else if (e.getSource() == btnActualizar) {

@@ -78,9 +78,6 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         panelTitulo.add(lblTitulo, BorderLayout.CENTER);
 
         panelCentral.add(lblDescripcion, BorderLayout.CENTER);
-
-
-
         panelBotones.add(btnRegistrar);
         panelBotones.add(btnCalcular);
         panelBotones.add(btnConsultar);
@@ -96,11 +93,9 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         menuBar = new JMenuBar();
 
         menuArchivo = new JMenu("Archivo");
-        menuArchivo.setMnemonic('A');
 
         itemSalir = new JMenuItem("Salir");
-        itemSalir.setMnemonic('S');
-        itemSalir.setAccelerator(KeyStroke.getKeyStroke("ctrl Q"));
+
         itemSalir.addActionListener(this);
         menuArchivo.add(itemSalir);
 
@@ -108,29 +103,20 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         menuPrincipal.setMnemonic('P');
 
         itemRegistrarPersona = new JMenuItem("Registrar Persona");
-        itemRegistrarPersona.setMnemonic('R');
-        itemRegistrarPersona.setAccelerator(KeyStroke.getKeyStroke("ctrl R"));
         itemRegistrarPersona.addActionListener(this);
 
         itemCalcularIMC = new JMenuItem("Calcular IMC");
-        itemCalcularIMC.setMnemonic('I');
-        itemCalcularIMC.setAccelerator(KeyStroke.getKeyStroke("ctrl I"));
         itemCalcularIMC.addActionListener(this);
 
         menuPrincipal.add(itemRegistrarPersona);
         menuPrincipal.add(itemCalcularIMC);
 
         menuConsultas = new JMenu("Consultas");
-        menuConsultas.setMnemonic('C');
 
         itemConsultaIndividual = new JMenuItem("Consulta Individual");
-        itemConsultaIndividual.setMnemonic('n');
-        itemConsultaIndividual.setAccelerator(KeyStroke.getKeyStroke("ctrl N"));
         itemConsultaIndividual.addActionListener(this);
 
         itemConsultarLista = new JMenuItem("Lista de Personas");
-        itemConsultarLista.setMnemonic('L');
-        itemConsultarLista.setAccelerator(KeyStroke.getKeyStroke("ctrl L"));
         itemConsultarLista.addActionListener(this);
 
         menuConsultas.add(itemConsultaIndividual);

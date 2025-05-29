@@ -25,7 +25,6 @@ public class VentanaConsultarLista extends JDialog implements ActionListener {
         initComponents();
         setupLayout();
         setupListeners();
-        cargarDatos();
     }
 
     private void initComponents() {

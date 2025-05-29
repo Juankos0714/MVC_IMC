@@ -85,10 +85,6 @@ public class Coordinador {
         return miPersonaDAO.consultarTodasLasPersonas();
     }
 
-    public java.util.List<PersonaDTO> obtenerTodasLasPersonas() {
-        return miPersonaDAO.consultarTodasLasPersonas();
-    }
-
     public boolean existePersona(String Documento) {
         PersonaDTO persona = miPersonaDAO.consultarPersona(Documento);
         return persona != null;

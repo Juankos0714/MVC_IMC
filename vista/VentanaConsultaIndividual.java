@@ -134,30 +134,49 @@ public class VentanaConsultaIndividual extends JDialog implements ActionListener
 
 
     private void eliminarUsuario() {
-        String resp=miCoordinador.eliminarPersona(txtDocumento.getText());
-        if (resp.equals("ok")) {
-            JOptionPane.showMessageDialog(null, "NO SE PUDO ELIMINAR","ERROR",JOptionPane.ERROR_MESSAGE);
+        if (txtDocumento.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar un documento", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int confirmacion = JOptionPane.showConfirmDialog(null,
+                "¿Está seguro de que desea eliminar esta persona?",
+                "Confirmar Eliminación",
+                JOptionPane.YES_NO_OPTION);
 
-        }else {
-            JOptionPane.showMessageDialog(null, "Se elimina exitosamente","Elimina",JOptionPane.WARNING_MESSAGE);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            String resp = miCoordinador.eliminarPersona(txtDocumento.getText().trim());
 
-
+            if (resp.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Se elimina exitosamente", "Eliminado", JOptionPane.INFORMATION_MESSAGE);
+                txtDocumento.setText("");
+                txtNombre.setText("");
+                txtEdad.setText("");
+            } else {
+                JOptionPane.showMessageDialog(null, "NO SE PUDO ELIMINAR", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
     private void actualizarUsuario() {
-        PersonaDTO personaNueva=miCoordinador.consultarPersona(txtDocumento.getText());
-        personaNueva.setNombre(txtNombre.getText());
-        personaNueva.setEdad(Integer.parseInt(txtEdad.getText()));
-
-        String resp=miCoordinador.actualizarPersona(personaNueva);
-
-        if (resp.equals("ok")) {
-            JOptionPane.showMessageDialog(null, "Se Actualiza exitosamente","Actualizado",JOptionPane.WARNING_MESSAGE);
-        }else {
-            JOptionPane.showMessageDialog(null, "NO SE PUDO ACTUALIZAR","ERROR",JOptionPane.ERROR_MESSAGE);
-
+        if (txtDocumento.getText().trim().isEmpty() || txtNombre.getText().trim().isEmpty() || txtEdad.getText().trim().isEmpty() ) {
+            JOptionPane.showMessageDialog(null, "Ingrese todos los parametros", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+        try {
+            PersonaDTO personaActualizada = new PersonaDTO();
+            personaActualizada.setDocumento(txtDocumento.getText().trim());
+            personaActualizada.setNombre(txtNombre.getText().trim());
+            personaActualizada.setEdad(Integer.parseInt(txtEdad.getText().trim()));
 
+            String resp = miCoordinador.actualizarPersona(personaActualizada);
+
+            if (resp.equals("ok")) {
+                JOptionPane.showMessageDialog(null, "Se actualiza exitosamente", "Actualizado", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "NO SE PUDO ACTUALIZAR", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "La edad debe ser un número válido", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public void setCoordinador(Coordinador miCoordinador) {

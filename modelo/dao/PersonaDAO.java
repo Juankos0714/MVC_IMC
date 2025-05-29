@@ -61,83 +61,20 @@ public class PersonaDAO {
     }
 
     public String eliminarPersona(String documento) {
-        if (personasMap.containsKey(documento)) {
-            personasMap.remove(documento);
-            return "ok";
-        } else {
+        if (documento == null || documento.trim().isEmpty()) {
             return "error";
         }
-
-    }
-
-    public int obtenerTotalPersonas() {
-        try {
-            return miConexionBD.obtenerTotalPersonas();
-        } catch (Exception e) {
-            System.err.println("Error al obtener total de personas: " + e.getMessage());
-            return 0;
+        String clave = documento.trim().toLowerCase();
+        if (personasMap.containsKey(clave)) {
+            personasMap.remove(clave);
+            System.out.println("Persona eliminada: " + documento);
+            return "ok";
+        } else {
+            System.out.println("Persona no encontrada para eliminar: " + documento);
+            return "error";
         }
     }
 
-    public List<PersonaDTO> consultarPersonasPorEstado(String estado) {
-        List<PersonaDTO> personasFiltradas = new ArrayList<>();
-
-        if (estado == null || estado.trim().isEmpty()) {
-            System.out.println("Error: Estado no puede estar vacío");
-            return personasFiltradas;
-        }
-
-        try {
-            List<PersonaDTO> todasLasPersonas = miConexionBD.obtenerTodasLasPersonas();
-            for (PersonaDTO persona : todasLasPersonas) {
-                if (persona.getEstado() != null &&
-                        persona.getEstado().equalsIgnoreCase(estado.trim())) {
-                    personasFiltradas.add(persona);
-                }
-            }
-            System.out.println("Encontradas " + personasFiltradas.size() +
-                    " personas con estado: " + estado);
-        } catch (Exception e) {
-            System.err.println("Error al consultar personas por estado: " + e.getMessage());
-        }
-
-        return personasFiltradas;
-    }
-
-    public boolean existePersona(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            return false;
-        }
-
-        try {
-            return miConexionBD.existePersona(nombre);
-        } catch (Exception e) {
-            System.err.println("Error al verificar existencia de persona: " + e.getMessage());
-            return false;
-        }
-    }
-
-    public void mostrarEstadisticas() {
-        try {
-            List<PersonaDTO> todasLasPersonas = consultarTodasLasPersonas();
-            System.out.println("\n=== ESTADÍSTICAS DE LA BASE DE DATOS ===");
-            System.out.println("Total de personas registradas: " + todasLasPersonas.size());
-
-            java.util.Map<String, Integer> estadosCount = new java.util.HashMap<>();
-            for (PersonaDTO persona : todasLasPersonas) {
-                String estado = persona.getEstado();
-                estadosCount.put(estado, estadosCount.getOrDefault(estado, 0) + 1);
-            }
-
-            System.out.println("\nDistribución por estados:");
-            for (java.util.Map.Entry<String, Integer> entry : estadosCount.entrySet()) {
-                System.out.println("- " + entry.getKey() + ": " + entry.getValue() + " personas");
-            }
-            System.out.println("========================================\n");
-        } catch (Exception e) {
-            System.err.println("Error al mostrar estadísticas: " + e.getMessage());
-        }
-    }
 
     public void setCoordinador(Coordinador miCoordinador) {
         this.miCoordinador = miCoordinador;
@@ -151,17 +88,18 @@ public class PersonaDAO {
         return miConexionBD;
     }
     public String actualizarPersona(PersonaDTO persona) {
-
-        String resp="";
-        System.out.println(persona);
-        if (personasMap.containsKey(persona.getNombre())) {
-            personasMap.put(persona.getNombre(), persona);
-            resp="ok";
-        } else {
-            resp="error";
+        if (persona == null || persona.getDocumento() == null || persona.getDocumento().trim().isEmpty()) {
+            return "error";
         }
-
-        return resp;
-
+        String clave = persona.getDocumento().trim().toLowerCase();
+        if (personasMap.containsKey(clave)) {
+            PersonaDTO personaExistente = personasMap.get(clave);
+            personaExistente.setNombre(persona.getNombre());
+            personaExistente.setEdad(persona.getEdad());
+            personasMap.put(clave, personaExistente);
+            return "ok";
+        } else {
+            return "error";
+        }
     }
 }
